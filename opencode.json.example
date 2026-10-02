@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["hydradb-opencode"],
+  "mcp": {
+    "hydradb": {
+      "type": "remote",
+      "url": "https://mcp.hydradb.com"
+    }
+  }
+}
