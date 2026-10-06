@@ -49,7 +49,7 @@ Set credentials (resolved by the shared engine, same as the other plugins):
 
 ```bash
 export HYDRADB_API_KEY="your-api-key"
-export HYDRADB_TENANT_ID="your-tenant-id"
+export HYDRADB_DATABASE="your-tenant-id"
 ```
 
 ## Configuration
