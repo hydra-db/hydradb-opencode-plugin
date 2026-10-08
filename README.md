@@ -42,7 +42,7 @@ OpenCode can load `.opencode/plugins/hydradb.js`; or publish it and reference it
 in `opencode.json` (see `opencode.json.example`):
 
 ```json
-{ "plugin": ["hydradb-opencode"] }
+{ "plugin": ["hydradb-opencode-plugin"] }
 ```
 
 Set credentials (resolved by the shared engine, same as the other plugins):
