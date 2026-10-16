@@ -1,6 +1,6 @@
 {
   "name": "hydradb-opencode-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Persistent, cross-session memory for OpenCode, powered by HydraDB: prompt-time recall, workspace sync, and conversation capture.",
   "author": "HydraDB <support@hydradb.com>",
   "license": "Apache-2.0",

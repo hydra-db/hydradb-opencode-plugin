@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/hydra-db/hydradb-opencode-plugin/main/assets/icon.png" width="96" alt="HydraDB" />
+</p>
+
 # HydraDB OpenCode Plugin
 
 Persistent, cross-session memory for [OpenCode](https://opencode.ai/docs/plugins/),
