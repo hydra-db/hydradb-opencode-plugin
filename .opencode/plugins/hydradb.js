@@ -50,6 +50,13 @@ export const HydraDB = async () => {
    */
   let pending = ""
 
+  /**
+   * Latest assistant text per session, assembled from streamed text parts and
+   * consumed at session.idle so the completed reply is saved alongside the
+   * prompt. Reset when a new user turn arrives so one turn is captured once.
+   */
+  const assistantText = new Map()
+
   return {
     // Agent-invocable recall tool. More reliable than experimental context
     // injection, which does not reach the model in headless `opencode run`.
@@ -72,13 +79,27 @@ export const HydraDB = async () => {
       if (event?.type === "file.edited") {
         const file = event.properties?.file ?? event.properties?.path
         runEngine("post-tool-use", JSON.stringify({ tool_input: { file_path: file } }))
+      } else if (event?.type === "message.part.updated") {
+        // Streamed assistant output: parts arrive with the full current text, so
+        // keep the latest per session to pass as the completed reply at idle.
+        const part = event.properties?.part
+        if (part?.type === "text" && typeof part.text === "string") {
+          assistantText.set(part.sessionID ?? part.sessionId ?? "", part.text)
+        }
       } else if (event?.type === "session.idle") {
-        runEngine("stop", JSON.stringify({ session_id: event.properties?.sessionID ?? "" }))
+        const sessionID = event.properties?.sessionID ?? ""
+        const assistant = assistantText.get(sessionID) ?? ""
+        assistantText.delete(sessionID)
+        runEngine(
+          "stop",
+          JSON.stringify({ session_id: sessionID, last_assistant_message: assistant })
+        )
       }
     },
 
     "chat.message": async (input, output) => {
       const sessionID = input?.sessionID ?? output?.message?.sessionID ?? ""
+      assistantText.set(sessionID, "")
       const prompt = (output?.parts ?? [])
         .map((p) => p?.text ?? "")
         .join(" ")
