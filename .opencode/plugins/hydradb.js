@@ -80,8 +80,7 @@ export const HydraDB = async () => {
         const file = event.properties?.file ?? event.properties?.path
         runEngine("post-tool-use", JSON.stringify({ tool_input: { file_path: file } }))
       } else if (event?.type === "message.part.updated") {
-        // Streamed assistant output: parts arrive with the full current text, so
-        // keep the latest per session to pass as the completed reply at idle.
+        // Parts arrive with the full current text; keep the latest per session.
         const part = event.properties?.part
         if (part?.type === "text" && typeof part.text === "string") {
           assistantText.set(part.sessionID ?? part.sessionId ?? "", part.text)
